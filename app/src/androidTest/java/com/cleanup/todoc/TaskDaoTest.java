@@ -28,8 +28,6 @@ public class TaskDaoTest {
     private TodocDataBase dataBase;
 
     private static long projectId = 1L;
-
-
     private Task TEST_TASK = new Task(projectId,"Test",1595945393);
 
     @Rule
@@ -59,7 +57,7 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndGetTask() throws InterruptedException {
-        Project project = new Project(1L,"ProketTEst",0xFFEADAD1);
+        Project project = new Project(1L,"ProjectTest",0xFFEADAD1);
         this.dataBase.projectDao().createProject(project);
         this.dataBase.taskDao().insertTask(TEST_TASK);
 
@@ -70,15 +68,17 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndDeleteTask() throws InterruptedException{
-        Project project = new Project(1L,"ProketTEst",0xFFEADAD1);
+        Project project = new Project(1L,"ProjectTest",0xFFEADAD1);
         this.dataBase.projectDao().createProject(project);
-
         this.dataBase.taskDao().insertTask(TEST_TASK);
-
-        //TEST
         List<Task> tasks = LiveDataTestUtil.getValue(this.dataBase.taskDao().getTasks());
-        assertEquals(1, tasks.size());
-        this.dataBase.taskDao().deleteTask(TEST_TASK);
-        assertTrue(tasks.isEmpty());
+        assertEquals(1,tasks.size());
+        this.dataBase.taskDao().deleteTask(tasks.get(0));
+        List<Task> tasks1 = LiveDataTestUtil.getValue(this.dataBase.taskDao().getTasks());
+        assertEquals(0,tasks1.size());
+
+
+
+
     }
 }
